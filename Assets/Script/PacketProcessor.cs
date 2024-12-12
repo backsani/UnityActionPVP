@@ -12,6 +12,7 @@ public class PacketProcessor
     //패킷 관련 변수
     //public List<Packet> packetData = new List<Packet>(10);
     private LoginPacket PK_login = new LoginPacket();
+    private MatchPacket PK_match = new MatchPacket();
 
 
     private readonly Dictionary<HeaderType, Packet> packetData = new Dictionary<HeaderType, Packet>();
@@ -25,8 +26,10 @@ public class PacketProcessor
     public PacketProcessor()
     {
         packetData[HeaderType.ACCEPT] = PK_login;
+        packetData[HeaderType.MATCH] = PK_match;
 
         handlers[HeaderType.ACCEPT] = HandleLoginProcesse;
+        handlers[HeaderType.MATCH] = HandleMatchProcesse;
     }
 
     public void ProcessBuffer(byte[] buffer)
@@ -56,5 +59,11 @@ public class PacketProcessor
             SceneManager.LoadScene("MatchingScene");
             Debug.Log("로그인 성공");
         }
+    }
+
+    public void HandleMatchProcesse(byte[] buffer, Packet packet)
+    {
+        
+
     }
 }

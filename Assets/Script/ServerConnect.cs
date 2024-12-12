@@ -88,6 +88,7 @@ public class ServerConnect : MonoBehaviour
     //패킷 관련 변수
     public List<Packet> packetData = new List<Packet>();
     private LoginPacket PK_login = new LoginPacket();
+    private MatchPacket PK_match = new MatchPacket();
     public PacketProcessor packetProcessor = new PacketProcessor();
 
     public ServerUtil.Header.ConnectionState currentState;
@@ -103,6 +104,7 @@ public class ServerConnect : MonoBehaviour
 
         ConnectToTcpServer();
         packetData.Add(PK_login);
+        packetData.Add(PK_match);
 
         UserId = "Unconnected User";
         currentState = ServerUtil.Header.ConnectionState.INIT;
