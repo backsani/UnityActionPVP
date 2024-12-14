@@ -35,15 +35,13 @@ public class MatchPacket : Packet
 
         //공사중
 
-        byte[] data = Encoding.ASCII.GetBytes(buffer);
+        byte[] data = BitConverter.GetBytes(int.Parse(buffer));
 
         byte[] result = new byte[header.Length + data.Length + byteState.Length];
 
         Buffer.BlockCopy(header, 0, result, 0, header.Length);                      // PK_Data
 
-        Buffer.BlockCopy(byteState, 0, result, header.Length, byteState.Length);
-
-        Buffer.BlockCopy(data, 0, result, header.Length + byteState.Length, data.Length); // 메시지 길이
+        Buffer.BlockCopy(data, 0, result, header.Length, data.Length);
 
         return result;
     }

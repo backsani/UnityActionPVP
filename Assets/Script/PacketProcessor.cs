@@ -63,7 +63,20 @@ public class PacketProcessor
 
     public void HandleMatchProcesse(byte[] buffer, Packet packet)
     {
-        
-
+        Debug.Log("HandleMatchProcesse 성공");
+        byte[] result = new byte[256];
+        result = packet.DeSerialzed(buffer);
+        if (ServerConnect.Instance.currentState == ConnectionState.MATCH_FIND)
+        {
+            SceneManager.LoadScene("MatchMakingScene");
+        }
+        else if (ServerConnect.Instance.currentState == ConnectionState.MATCH_ACCEPT)
+        {
+            SceneManager.LoadScene("BattleScene");
+        }
+        else if (ServerConnect.Instance.currentState == ConnectionState.MATCH_REFUSE)
+        {
+            Debug.Log("매칭 거절");
+        }
     }
 }
