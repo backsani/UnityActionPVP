@@ -30,7 +30,9 @@ namespace ServerUtil.Header
         MATCH_REQUEST,
         MATCH_FIND,
         MATCH_ACCEPT,
-        MATCH_REFUSE
+        MATCH_REFUSE,
+        INGAME_INIT,
+        INGAME_MOVE
     };
 }
 

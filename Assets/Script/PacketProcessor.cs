@@ -13,6 +13,7 @@ public class PacketProcessor
     //public List<Packet> packetData = new List<Packet>(10);
     private LoginPacket PK_login = new LoginPacket();
     private MatchPacket PK_match = new MatchPacket();
+    private IngamePacket PK_ingame = new IngamePacket();
 
 
     private readonly Dictionary<HeaderType, Packet> packetData = new Dictionary<HeaderType, Packet>();
@@ -27,9 +28,11 @@ public class PacketProcessor
     {
         packetData[HeaderType.ACCEPT] = PK_login;
         packetData[HeaderType.MATCH] = PK_match;
+        packetData[HeaderType.INGAME] = PK_ingame;
 
         handlers[HeaderType.ACCEPT] = HandleLoginProcesse;
         handlers[HeaderType.MATCH] = HandleMatchProcesse;
+        handlers[HeaderType.INGAME] = HandleIngameProcesse;
     }
 
     public void ProcessBuffer(byte[] buffer)
@@ -66,13 +69,37 @@ public class PacketProcessor
         Debug.Log("HandleMatchProcesse 성공");
         byte[] result = new byte[256];
         result = packet.DeSerialzed(buffer);
+
         if (ServerConnect.Instance.currentState == ConnectionState.MATCH_FIND)
         {
             SceneManager.LoadScene("MatchMakingScene");
         }
         else if (ServerConnect.Instance.currentState == ConnectionState.MATCH_ACCEPT)
         {
+            
+        }
+        else if (ServerConnect.Instance.currentState == ConnectionState.MATCH_REFUSE)
+        {
+            Debug.Log("매칭 거절");
+        }
+    }
+    
+    public void HandleIngameProcesse(byte[] buffer, Packet packet)
+    {
+        byte[] result = new byte[256];
+        result = packet.DeSerialzed(buffer);
+        Debug.Log("HandleIngameProcesse 성공" + ServerConnect.Instance.currentState);
+
+        if (ServerConnect.Instance.currentState == ConnectionState.INGAME_INIT)
+        {
+            ServerConnect.Instance.myClientIndex = BitConverter.ToInt32(result);
+            Debug.Log("clientInit : " + BitConverter.ToString(result));
+
             SceneManager.LoadScene("BattleScene");
+        }
+        else if (ServerConnect.Instance.currentState == ConnectionState.INGAME_MOVE)
+        {
+            
         }
         else if (ServerConnect.Instance.currentState == ConnectionState.MATCH_REFUSE)
         {

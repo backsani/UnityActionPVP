@@ -33,11 +33,9 @@ public class MatchPacket : Packet
 
         byte[] header = PackingHeader(ServerUtil.Header.HeaderType.MATCH, buffer.Length + byteState.Length);
 
-        //°ø»çÁß
-
         byte[] data = BitConverter.GetBytes(int.Parse(buffer));
 
-        byte[] result = new byte[header.Length + data.Length + byteState.Length];
+        byte[] result = new byte[header.Length + data.Length];
 
         Buffer.BlockCopy(header, 0, result, 0, header.Length);                      // PK_Data
 

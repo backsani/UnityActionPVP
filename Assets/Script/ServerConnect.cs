@@ -17,6 +17,15 @@ enum PK_Data
     STATE
 }
 
+public class ClientInfo
+{
+    public float hp;
+    public float rotation;
+    public int sessionIndex;
+    public UnityEngine.Vector3 mTransform;
+    public string mName;
+}
+
 public class ServerConnect : MonoBehaviour
 {
 
@@ -63,6 +72,10 @@ public class ServerConnect : MonoBehaviour
     private static Queue<byte[]> sendQueue = new Queue<byte[]>();
     private static Queue<byte[]> recvQueue = new Queue<byte[]>();
 
+    //ClientInfo
+    public List<ClientInfo> clientInfo = new List<ClientInfo>();
+    public int myClientIndex;
+
     private string _userId;
     public string UserId { get { return _userId; } 
         set { 
@@ -89,6 +102,8 @@ public class ServerConnect : MonoBehaviour
     public List<Packet> packetData = new List<Packet>();
     private LoginPacket PK_login = new LoginPacket();
     private MatchPacket PK_match = new MatchPacket();
+    private IngamePacket PK_ingame = new IngamePacket();
+
     public PacketProcessor packetProcessor = new PacketProcessor();
 
     public ServerUtil.Header.ConnectionState currentState;
@@ -100,11 +115,16 @@ public class ServerConnect : MonoBehaviour
     
     void Start()
     {
+        myClientIndex = 100;
+
         asyncSocketClient = new AsyncSocketClient();
+        clientInfo.Add(new ClientInfo());
+        clientInfo.Add(new ClientInfo());
 
         ConnectToTcpServer();
         packetData.Add(PK_login);
         packetData.Add(PK_match);
+        packetData.Add(PK_ingame);
 
         UserId = "Unconnected User";
         currentState = ServerUtil.Header.ConnectionState.INIT;
@@ -233,6 +253,8 @@ public class ServerConnect : MonoBehaviour
 
             clientSocket.Close();
             Debug.Log("서버와 연결 종료.");
+
+            Application.Quit();
         }
 
         catch(Exception ex) 
