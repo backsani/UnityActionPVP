@@ -23,8 +23,11 @@ public class IngamePacket : Packet
 
         //어떤 플레이어의 정보인지 받기
         int currentClietIndex = BitConverter.ToInt32(buffer, Length);
-        ServerConnect.Instance.myClientIndex = currentClietIndex;
-        Length += sizeof(Int32);
+        if (currentClietIndex == 100)
+        {
+            ServerConnect.Instance.myClientIndex = currentClietIndex;
+            Length += sizeof(Int32);
+        }
 
 
         //해당 플레이어의 좌표 받기

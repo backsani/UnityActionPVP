@@ -108,7 +108,7 @@ public class ServerConnect : MonoBehaviour
 
     public ServerUtil.Header.ConnectionState currentState;
 
-    Buffer_Converter bufferCon;
+    private Buffer_Converter bufferCon = new Buffer_Converter();
 
     [SerializeField]
     private Text message;
@@ -190,6 +190,29 @@ public class ServerConnect : MonoBehaviour
 
     private void OnReceiveCompleted(object sender, SocketAsyncEventArgs e)
     {
+
+        if (e.BytesTransferred != bufferCon.GetLength(e.Buffer) && e.BytesTransferred > 0)
+        {
+            byte[] tempBuffer = new byte[256];
+
+            Buffer.BlockCopy(e.Buffer, 0, tempBuffer, 0, bufferCon.GetLength(e.Buffer));
+
+
+            EnqueueRecvData(tempBuffer);
+
+            Debug.Log("클라이언트 데이터 여러개 수신");
+
+            StartReceive();
+
+            return;
+        }
+        else if (e.BytesTransferred != bufferCon.GetLength(e.Buffer))
+        {
+
+            return;
+        }
+        
+
         if(e.SocketError == SocketError.Success && e.BytesTransferred > 0)
         {
             EnqueueRecvData(e.Buffer);

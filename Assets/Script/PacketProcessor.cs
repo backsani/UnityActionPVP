@@ -52,7 +52,7 @@ public class PacketProcessor
 
     public void HandleLoginProcesse(byte[] buffer, Packet packet)
     {
-        Debug.Log("HandleLoginProcesse 己傍");
+        Debug.Log("HandleLoginProcesse 己傍" + ServerConnect.Instance.currentState);
         byte[] result = new byte[256];
         result = packet.DeSerialzed(buffer);
         Debug.Log(Encoding.UTF8.GetString(result));
@@ -66,7 +66,7 @@ public class PacketProcessor
 
     public void HandleMatchProcesse(byte[] buffer, Packet packet)
     {
-        Debug.Log("HandleMatchProcesse 己傍");
+        Debug.Log("HandleMatchProcesse 己傍" + ServerConnect.Instance.currentState);
         byte[] result = new byte[256];
         result = packet.DeSerialzed(buffer);
 

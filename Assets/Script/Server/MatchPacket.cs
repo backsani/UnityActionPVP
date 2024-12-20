@@ -11,7 +11,6 @@ public class MatchPacket : Packet
 
     public override byte[] DeSerialzed(byte[] buffer)
     {
-        byte[] dataValue = new byte[256];
         int Length = 0;
         byte[] dataStateType = new byte[sizeof(int)];
 
@@ -22,16 +21,14 @@ public class MatchPacket : Packet
 
         ServerConnect.Instance.currentState = (ServerUtil.Header.ConnectionState)BitConverter.ToInt32(dataStateType);
 
-        Buffer.BlockCopy(buffer, Length, dataValue, 0, _packetHeader.Length - Length);
-
-        return dataValue;
+        return buffer;
     }
 
     public override byte[] Serialzed(string buffer)
     {
         byte[] byteState = BitConverter.GetBytes((int)ServerConnect.Instance.currentState);
 
-        byte[] header = PackingHeader(ServerUtil.Header.HeaderType.MATCH, buffer.Length + byteState.Length);
+        byte[] header = PackingHeader(ServerUtil.Header.HeaderType.MATCH,byteState.Length);
 
         byte[] data = BitConverter.GetBytes(int.Parse(buffer));
 

@@ -14,4 +14,13 @@ public class Buffer_Converter
 
         return BitConverter.ToInt32(dataHeaderType);
     }
+
+    public int GetLength(byte[] buffer)
+    {
+        byte[] dataLength = new byte[sizeof(int)];
+
+        Buffer.BlockCopy(buffer, 0, dataLength, 0, dataLength.Length);
+
+        return BitConverter.ToInt32(dataLength);
+    }
 }

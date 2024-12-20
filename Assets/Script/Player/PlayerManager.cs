@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        Player1.transform.localPosition = ServerConnect.Instance.clientInfo[0].mTransform;
-        Player2.transform.localPosition = ServerConnect.Instance.clientInfo[1].mTransform;
+        Player1.transform.position = ServerConnect.Instance.clientInfo[0].mTransform;
+        Player2.transform.position = ServerConnect.Instance.clientInfo[1].mTransform;
     }
 }
